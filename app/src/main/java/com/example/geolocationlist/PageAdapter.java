@@ -15,14 +15,14 @@ public class PageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                TabOne tabOne = new TabOne();
-                return tabOne;
+                Gnss gnss = new Gnss();
+                return gnss;
             case 1:
-                TabTwo tabTwo = new TabTwo();
-                return tabTwo;
+                Configuracoes configuracoes = new Configuracoes();
+                return configuracoes;
             case 2:
-                TabThree tabThree = new TabThree();
-                return tabThree;
+                Creditos creditos = new Creditos();
+                return creditos;
             default:
                 return null;
         }

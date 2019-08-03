@@ -2,4 +2,27 @@
     <string name="app_name">GEOInfo</string>
     <string name="dialog_message">Message</string>
     <string name="dialog_title">Titulo</string>
+    <string name="coordenadas">Formato de Apresentação das Coordenadas Geográficas:</string>
+    <string name="decimal">Grau Decimal</string>
+    <string name="minutoDecimal">Grau-Minuto Decimal</string>
+    <string name="minutoSegundoDecimal">Grau-Minuto-Segundo Decimal</string>
+    <string name="unidadeApresentacao">Unidade de Apresentação da Velocidade</string>
+    <string name="km">Km/h(quilometro por hora)</string>
+    <string name="mph">Mph (milhas por hora)</string>
+    <string name="orientMapa">Orientação do Mapa</string>
+    <string name="none">Nenhuma</string>
+    <string name="north">North Up</string>
+    <string name="course">Course Up</string>
+    <string name="tipoMapa">Tipo do Mapa</string>
+    <string name="vet">Vetorial</string>
+    <string name="sat">Imagem de Satélite</string>
+    <string name="trafego">Informações de Tráfego</string>
+
+    <string-array name="coordOpt">
+        <item>Selecione um Formato de Apresentação</item>
+        <item>Grau Decimal</item>
+        <item>Grau-Minuto Decimal</item>
+        <item>Grau-Minuto-Segundo Decimal</item>
+    </string-array>
+
 </resources>
