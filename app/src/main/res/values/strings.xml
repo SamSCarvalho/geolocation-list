@@ -16,10 +16,9 @@
     <string name="tipoMapa">Tipo do Mapa</string>
     <string name="vet">Vetorial</string>
     <string name="sat">Imagem de Satélite</string>
-    <string name="trafego">Informações de Tráfego</string>
+    <string name="Infotrafego">Informações de Tráfego</string>
 
     <string-array name="coordOpt">
-        <item>Selecione um Formato de Apresentação</item>
         <item>Grau Decimal</item>
         <item>Grau-Minuto Decimal</item>
         <item>Grau-Minuto-Segundo Decimal</item>

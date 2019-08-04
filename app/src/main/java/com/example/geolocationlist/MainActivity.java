@@ -1,6 +1,8 @@
 package com.example.geolocationlist;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -20,9 +22,33 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity{
     private LocationManager locationManager;
     private static final int REQUEST_LOCATION = 2;
+    private static final String PREFER_NAME = "Config";
+    private SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Context contexto = getApplicationContext();
+        //int duracao = Toast.LENGTH_SHORT;
+
+        sharedPref = getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        if (!sharedPref.contains("formatoApresent"))
+        {
+            editor.putString("formatoApresent", "Grau Decimal");
+
+        }
+
+        //editor.putString("formatoApresent", "Grau Decimal");
+        //editor.putString("UnidadeApresent", R.string.km);
+        //editor.putString("OrientMapa", R.string.none);
+        //editor.putString("TipoMapa", R.string.vet);
+        //editor.putString("InfoTrafego", 0);
+        editor.commit();
+
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if(ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) ==
