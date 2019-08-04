@@ -6,7 +6,15 @@
     <string name="velocidade">Unidade de Apresentação da Velocidade</string>
     <string name="orientMapa">Orientação do Mapa</string>
     <string name="tipoMapa">Tipo do Mapa</string>
-    <string name="Infotrafego">Informações de Tráfego</string>
+    <string name="infotrafego">Informações de Tráfego</string>
+    <string name="creditos"> \n Esta aplicação consiste na implementação de um sistema de navegação para
+        dispositivos móveis, fornecendo uma interface com o usuário com informações relacionadas as
+        coordenadas do dispositivo, posição de satélites visíveis na esfera celeste e qualidade do
+        sinal, além de configurações referentes a apresentação destas informações. \n\n
+        Elaborada por Isabel Atta e Samuel Carvalho trata-se de uma prática desenvolvida para
+        fins de avaliação da disciplina Concepção e Desenvolvimento de Aplicações para Dispositivos
+        Móveis do curso de Sistemas de Informação do DCET – I da Universidade do Estado da Bahia – UNEB.
+    </string>
 
     <string-array name="coordOpt" >
         <item>Grau Decimal</item>
