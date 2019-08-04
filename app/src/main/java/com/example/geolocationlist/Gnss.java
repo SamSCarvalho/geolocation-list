@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,63 +27,85 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class Gnss extends Fragment implements LocationListener{
+public class Gnss extends Fragment implements LocationListener, GpsStatus.Listener{
     private LocationManager locationManager;
-    private LocationListener locationListener = new DummyLocationListener();
-    private GpsListener gpsListener = new GpsListener();
-    private Location location;
-    private GpsStatus gpsStatus;
+    private LocationProvider locationProvider;
     private static final int REQUEST_LOCATION = 2;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         return inflater.inflate(R.layout.gnss, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED) {
+            ativaGPS();
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION);
+        }
+    }
+
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults.length == 1 && grantResults[0] ==
+            PackageManager.PERMISSION_GRANTED) {
+                ativaGPS();
+            }
+        } else {
+            Log.d("ERRO", "onRequestPermissionsResult: FALSE");
+        }
+    }
+
+    public void ativaGPS() {
+        try {
+            locationProvider = locationManager.getProvider(LocationManager.GPS_PROVIDER);
+            locationManager.requestLocationUpdates(locationProvider.getName(),3000, 1, this);
+            locationManager.addGpsStatusListener(this);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void desativaGPS() {
+        try {
+            locationManager.removeUpdates(this);
+            locationManager.removeGpsStatusListener(this);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        desativaGPS();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-
-        } else {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION);
-        }
-
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        gpsStatus = locationManager.getGpsStatus(null);
-        locationManager.addGpsStatusListener(gpsListener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2*1000, 0, locationListener);
-
     }
 
-
-    private void getSatData(){
-        Iterable<GpsSatellite> sats = gpsStatus.getSatellites();
-        for(GpsSatellite sat : sats){
-        }
-
-        if(ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-
-        } else {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION);
-        }
-
-        gpsStatus = locationManager.getGpsStatus(gpsStatus);
-
-    }
 
     @Override
-    public void onLocationChanged(Location location){ }
+    public void onLocationChanged(Location location){
+        TextView altitudeText = (TextView) getActivity().findViewById(R.id.altitudeValue);
+        TextView longitudeText = (TextView) getActivity().findViewById(R.id.longitudeValue);
+        TextView latitudeText = (TextView) getActivity().findViewById(R.id.latitudeValue);
+
+        altitudeText.setText(Location.convert(location.getAltitude(),Location.FORMAT_SECONDS));
+        longitudeText.setText(Location.convert(location.getLongitude(),Location.FORMAT_SECONDS));
+        latitudeText.setText(Location.convert(location.getLatitude(),Location.FORMAT_SECONDS));
+    }
     @Override
     public void onProviderDisabled(String provider) { }
     @Override
@@ -90,30 +113,22 @@ public class Gnss extends Fragment implements LocationListener{
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) { }
 
-    class GpsListener implements GpsStatus.Listener{
-        @Override
-        public void onGpsStatusChanged(int event) {
-            getSatData();
-        }
-    }
 
-    class DummyLocationListener implements LocationListener {
-        //Empty class just to ease instatiation
-        @Override
-        public void onLocationChanged(Location location) {
-            TextView altitudeText = (TextView) getActivity().findViewById(R.id.altitudeValue);
-            TextView longitudeText = (TextView) getActivity().findViewById(R.id.longitudeValue);
-            TextView latitudeText = (TextView) getActivity().findViewById(R.id.latitudeValue);
-
-            altitudeText.setText(location.getAltitude()+"");
-            longitudeText.setText(location.getLongitude()+"");
-            latitudeText.setText(location.getLatitude()+"");
+    @Override
+    public void onGpsStatusChanged(int i) {
+        String coords = "";
+        try {
+            GpsStatus gpsStatus = locationManager.getGpsStatus(null);
+            if (gpsStatus != null) {
+                Iterable<GpsSatellite> sats = gpsStatus.getSatellites();
+                for (GpsSatellite sat: sats) {
+                    coords+=sat.getPrn()+";"+sat.getAzimuth()+";"+sat.getElevation()+";"
+                            +sat.getSnr()+";"+sat.usedInFix()+"\n";
+                }
+            }
+        } catch (SecurityException e){
+            e.printStackTrace();
         }
-        @Override
-        public void onProviderDisabled(String provider) { }
-        @Override
-        public void onProviderEnabled(String provider) { }
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) { }
+        Log.d("SATELITES", coords);
     }
 }
