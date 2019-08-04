@@ -17,17 +17,17 @@
         android:textColor="@color/colorText" />
 
 
-
     <Spinner
         android:id="@+id/coordenadaInput"
+        android:entries="@array/coordOpt"
+        style="@android:style/Widget.Material.Spinner.Underlined"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="35dp"
-        android:backgroundTint="@color/colorText"
-        android:entries="@array/coordOpt"
-        android:foregroundTint="@color/colorText"
-        android:padding="12dp" />
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="12dp"
+        android:paddingBottom="20dp"/>
 
 </LinearLayout>
