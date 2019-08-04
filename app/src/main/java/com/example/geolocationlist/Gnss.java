@@ -102,9 +102,9 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
         TextView longitudeText = (TextView) getActivity().findViewById(R.id.longitudeValue);
         TextView latitudeText = (TextView) getActivity().findViewById(R.id.latitudeValue);
 
-        altitudeText.setText(location.getAltitude()+"");
-        longitudeText.setText(location.getLongitude()+"");
-        latitudeText.setText(location.getLatitude()+"");
+        altitudeText.setText(Location.convert(location.getAltitude(),Location.FORMAT_SECONDS));
+        longitudeText.setText(Location.convert(location.getLongitude(),Location.FORMAT_SECONDS));
+        latitudeText.setText(Location.convert(location.getLatitude(),Location.FORMAT_SECONDS));
     }
     @Override
     public void onProviderDisabled(String provider) { }
@@ -116,6 +116,19 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
 
     @Override
     public void onGpsStatusChanged(int i) {
-
+        String coords = "";
+        try {
+            GpsStatus gpsStatus = locationManager.getGpsStatus(null);
+            if (gpsStatus != null) {
+                Iterable<GpsSatellite> sats = gpsStatus.getSatellites();
+                for (GpsSatellite sat: sats) {
+                    coords+=sat.getPrn()+";"+sat.getAzimuth()+";"+sat.getElevation()+";"
+                            +sat.getSnr()+";"+sat.usedInFix()+"\n";
+                }
+            }
+        } catch (SecurityException e){
+            e.printStackTrace();
+        }
+        Log.d("SATELITES", coords);
     }
 }

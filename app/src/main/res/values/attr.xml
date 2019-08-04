@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="custom_attributes">
+        <attr name="skyView_text" format="string"/>
+        <attr name="skyView_circleColor" format="color"/>
+        <attr name="skyView_textColor" format="color"/>
+        <attr name="skyView_satColor" format="color"/>
+    </declare-styleable>
+</resources>
