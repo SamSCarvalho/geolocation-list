@@ -18,24 +18,10 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity{
-    private LocationManager locationManager;
     private static final int REQUEST_LOCATION = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if(ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION);
-        }
-        List<String> list = locationManager.getAllProviders();
-        Log.d("get_location", list.toString());
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
