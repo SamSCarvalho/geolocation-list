@@ -65,7 +65,6 @@ public class Gnss extends Fragment implements LocationListener{
     private void getSatData(){
         Iterable<GpsSatellite> sats = gpsStatus.getSatellites();
         for(GpsSatellite sat : sats){
-            Log.d("SATELITE", sat.getPrn()+"");
         }
 
         if(ActivityCompat.checkSelfPermission(getContext(),

@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity{
         //editor.putString("TipoMapa", R.string.vet);
         //editor.putString("InfoTrafego", 0);
         editor.commit();
-        
+
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
