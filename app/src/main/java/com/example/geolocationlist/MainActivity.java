@@ -30,20 +30,32 @@ public class MainActivity extends AppCompatActivity{
         Context contexto = getApplicationContext();
         //int duracao = Toast.LENGTH_SHORT;
 
+        //cria o shared preferences e atribui default value para campos que não existirem
+
         sharedPref = getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
-        if (!sharedPref.contains("formatoApresent"))
-        {
+        if (!sharedPref.contains("formatoApresent")) {
             editor.putString("formatoApresent", "Grau Decimal");
 
         }
+        if (!sharedPref.contains("unidadeApresent")) {
+            editor.putString("unidadeApresent", "Km/h(quilometro por hora)");
 
-        //editor.putString("formatoApresent", "Grau Decimal");
-        //editor.putString("UnidadeApresent", R.string.km);
-        //editor.putString("OrientMapa", R.string.none);
-        //editor.putString("TipoMapa", R.string.vet);
-        //editor.putString("InfoTrafego", 0);
+        }
+        if (!sharedPref.contains("orientMapa")) {
+            editor.putString("orientMapa", "Nenhuma");
+
+        }
+        if (!sharedPref.contains("tipoMapa")) {
+            editor.putString("tipoMapa", "Vetorial");
+
+        }
+        if (!sharedPref.contains("infoTrafego")) {
+            editor.putInt("infoTrafego", 0);
+
+        }
+
         editor.commit();
 
 

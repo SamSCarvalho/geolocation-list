@@ -3,25 +3,33 @@
     <string name="dialog_message">Message</string>
     <string name="dialog_title">Titulo</string>
     <string name="coordenadas">Formato de Apresentação das Coordenadas Geográficas:</string>
-    <string name="decimal">Grau Decimal</string>
-    <string name="minutoDecimal">Grau-Minuto Decimal</string>
-    <string name="minutoSegundoDecimal">Grau-Minuto-Segundo Decimal</string>
-    <string name="unidadeApresentacao">Unidade de Apresentação da Velocidade</string>
-    <string name="km">Km/h(quilometro por hora)</string>
-    <string name="mph">Mph (milhas por hora)</string>
+    <string name="velocidade">Unidade de Apresentação da Velocidade</string>
     <string name="orientMapa">Orientação do Mapa</string>
-    <string name="none">Nenhuma</string>
-    <string name="north">North Up</string>
-    <string name="course">Course Up</string>
     <string name="tipoMapa">Tipo do Mapa</string>
-    <string name="vet">Vetorial</string>
-    <string name="sat">Imagem de Satélite</string>
     <string name="Infotrafego">Informações de Tráfego</string>
 
-    <string-array name="coordOpt">
+    <string-array name="coordOpt" >
         <item>Grau Decimal</item>
         <item>Grau-Minuto Decimal</item>
         <item>Grau-Minuto-Segundo Decimal</item>
     </string-array>
+
+    <string-array name="velocidadeOpt" >
+        <item>Km/h(quilometro por hora) </item>
+        <item>Mph (milhas por hora)</item>
+    </string-array>
+
+    <string-array name="orientOpt" >
+        <item>Nenhuma</item>
+        <item>North Up</item>
+        <item>Course Up</item>
+     </string-array>
+
+    <string-array name="tipoOpt" >
+        <item>Vetorial</item>
+        <item>Imagem de Satélite</item>
+    </string-array>
+
+
 
 </resources>

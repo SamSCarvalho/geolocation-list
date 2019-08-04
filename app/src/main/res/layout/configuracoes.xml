@@ -9,7 +9,7 @@
     android:touchscreenBlocksFocus="false">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/coordenadaText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -28,6 +28,93 @@
         android:layout_marginRight="35dp"
         android:backgroundTint="@color/colorPrimary"
         android:padding="12dp"
-        android:paddingBottom="20dp"/>
+        android:paddingBottom="20dp"
+        />
+
+    <TextView
+        android:id="@+id/velocidadeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="@string/velocidade"
+        android:textColor="@color/colorText"
+        android:layout_marginTop="10dp"/>
+
+
+    <Spinner
+        android:id="@+id/velocidadeInput"
+        android:entries="@array/velocidadeOpt"
+        style="@android:style/Widget.Material.Spinner.Underlined"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="35dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="12dp"
+        android:paddingBottom="20dp"
+        />
+
+    <TextView
+        android:id="@+id/orientText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="@string/orientMapa"
+        android:textColor="@color/colorText"
+        android:layout_marginTop="10dp"/>
+
+    <Spinner
+        android:id="@+id/orientInput"
+        android:entries="@array/orientOpt"
+        style="@android:style/Widget.Material.Spinner.Underlined"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="35dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="12dp"
+        android:paddingBottom="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tipoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="@string/tipoMapa"
+        android:textColor="@color/colorText"
+        android:layout_marginTop="10dp"/>
+
+    <Spinner
+        android:id="@+id/tipoInput"
+        android:entries="@array/tipoOpt"
+        style="@android:style/Widget.Material.Spinner.Underlined"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="35dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:padding="12dp"
+        android:paddingBottom="20dp"
+        />
+
+
+    <Switch
+        android:id="@+id/infoSwitch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:switchMinWidth="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="35dp"
+        android:text="@string/Infotrafego"
+        android:textColor="@color/colorText"
+        android:textOff="OFF"
+        android:textOn="ON"
+        android:theme="@style/SwitchTheme"/>
+
 
 </LinearLayout>
