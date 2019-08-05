@@ -120,11 +120,7 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
             GpsStatus gpsStatus = locationManager.getGpsStatus(null);
             if (gpsStatus != null) {
                 Iterable<GpsSatellite> sats = gpsStatus.getSatellites();
-                AttributeSet  attr = null;
-
-
-
-                SkyView skyView = new SkyView(getContext(), null );
+                SkyView skyView = new SkyView(getContext());
                 skyView.setSats(sats);
                 FrameLayout info = (FrameLayout) getView().findViewById(R.id.skyFatherView);
                 info.removeAllViews();

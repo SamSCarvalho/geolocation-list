@@ -25,19 +25,13 @@ public class SkyView extends View {
     Canvas canvas = new Canvas();
     Iterable<GpsSatellite> sats = null;
 
+    public SkyView(Context context) {
+        super(context);
+
+    }
+
     public SkyView(Context context, @Nullable AttributeSet attr) {
         super(context, attr);
-        SAT_RADIUS = dpToPixels(context, 5);
-        TypedArray a = context.getTheme().obtainStyledAttributes( attr, R.styleable.custom_attributes,
-                0, 0);
-        try {
-            circleColor = a.getInteger(R.styleable.custom_attributes_skyView_circleColor, 0);
-            textColor = a.getInteger(R.styleable.custom_attributes_skyView_textColor, 0);
-            text = a.getString(R.styleable.custom_attributes_skyView_text);
-            satColor = a.getInteger(R.styleable.custom_attributes_skyView_satColor, 0);
-        } finally {
-            a.recycle();
-        }
     }
 
     @SuppressLint("WrongCall")
@@ -45,7 +39,6 @@ public class SkyView extends View {
         this.sats = sats;
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -58,6 +51,7 @@ public class SkyView extends View {
         else
             radius=viewWidthHalf-40;
 
+        paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(4);
         paint.setColor(Color.GRAY);
@@ -110,19 +104,12 @@ public class SkyView extends View {
         path.lineTo(x3, y3);
         path.lineTo(x1, y1);
         path.close();
-
-        // Rotate arrow around center point
+        
         Matrix matrix = new Matrix();
         matrix.postRotate((float) -mOrientation, radius, radius);
         path.transform(matrix);
 
-        Paint mNorthPaint, mNorthFillPaint;
-
-        mNorthPaint = new Paint();
-        mNorthPaint.setColor(Color.BLACK);
-        mNorthPaint.setStyle(Paint.Style.STROKE);
-        mNorthPaint.setStrokeWidth(4.0f);
-        mNorthPaint.setAntiAlias(true);
+        Paint mNorthFillPaint;
 
         mNorthFillPaint = new Paint();
         mNorthFillPaint.setColor(Color.GRAY);
@@ -130,7 +117,6 @@ public class SkyView extends View {
         mNorthFillPaint.setStrokeWidth(4.0f);
         mNorthFillPaint.setAntiAlias(true);
 
-        c.drawPath(path, mNorthPaint);
         c.drawPath(path, mNorthFillPaint);
     }
 
@@ -150,7 +136,12 @@ public class SkyView extends View {
         y = (float) ((minScreenDimen / 2) - (radiusSat * Math.cos(angle)));
 
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(R.color.colorPrimary);
+        if (usedInFix) {
+            paint.setColor(Color.GRAY);
+        } else {
+            paint.setColor(R.color.colorPrimary);
+        }
+
         canvas.drawCircle(x, y, 20, paint);
         paint.setColor(Color.WHITE);
         paint.setTextAlign(Paint.Align.CENTER);
