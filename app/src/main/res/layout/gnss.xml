@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/gnss_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
@@ -83,6 +84,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         >
 
         <com.google.android.material.card.MaterialCardView
@@ -115,18 +117,25 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
-    <com.example.geolocationlist.SkyView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        custom:skyView_circleColor="#616161"
-        custom:skyView_text="UNEB"
-        custom:skyView_textColor="#fff"
-        custom:skyView_satColor="@color/colorPrimary"
-        android:layout_margin="25dp"
-        />
+        android:id="@+id/skyFatherView">
+        <com.example.geolocationlist.SkyView
+            android:id="@+id/skyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            custom:skyView_circleColor="#616161"
+            custom:skyView_text="UNEB"
+            custom:skyView_textColor="#fff"
+            custom:skyView_satColor="@color/colorPrimary"
+            android:layout_margin="25dp"
+            />
+    </FrameLayout>
+
 
 </LinearLayout>

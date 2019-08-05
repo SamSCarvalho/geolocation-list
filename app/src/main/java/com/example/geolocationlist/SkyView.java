@@ -1,5 +1,6 @@
 package com.example.geolocationlist;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -10,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.location.GpsSatellite;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -20,24 +22,30 @@ public class SkyView extends View {
     private static int SAT_RADIUS;
     private String text;
     private double mOrientation = 0.0;
+    Canvas canvas = new Canvas();
+    Iterable<GpsSatellite> sats = null;
 
-
-    public SkyView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    public SkyView(Context context, @Nullable AttributeSet attr) {
+        super(context, attr);
         SAT_RADIUS = dpToPixels(context, 5);
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.custom_attributes,
+        TypedArray a = context.getTheme().obtainStyledAttributes( attr, R.styleable.custom_attributes,
                 0, 0);
         try {
             circleColor = a.getInteger(R.styleable.custom_attributes_skyView_circleColor, 0);
             textColor = a.getInteger(R.styleable.custom_attributes_skyView_textColor, 0);
             text = a.getString(R.styleable.custom_attributes_skyView_text);
             satColor = a.getInteger(R.styleable.custom_attributes_skyView_satColor, 0);
-
         } finally {
             a.recycle();
         }
     }
 
+    @SuppressLint("WrongCall")
+    public void setSats(Iterable<GpsSatellite> sats) {
+        this.sats = sats;
+    }
+
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -45,27 +53,35 @@ public class SkyView extends View {
         int viewWidthHalf = this.getMeasuredWidth()/2;
         int viewHeightHalf = this.getMeasuredHeight()/2;
         int radius = 0;
-
         if(viewWidthHalf>viewHeightHalf)
-            radius=viewHeightHalf-10;
+            radius=viewHeightHalf-40;
         else
-            radius=viewWidthHalf-10;
+            radius=viewWidthHalf-40;
 
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(4);
-        paint.setColor(circleColor);
+        paint.setColor(Color.GRAY);
         canvas.drawCircle(viewWidthHalf, viewHeightHalf, radius, paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(4);
-        paint.setColor(circleColor);
+        paint.setColor(Color.GRAY);
         canvas.drawCircle(viewWidthHalf, viewHeightHalf, radius-100, paint);
         canvas.drawCircle(viewWidthHalf, viewHeightHalf, radius-200, paint);
 
-        drawSatellite(canvas, paint, 9, 312, 35, 5, true);
-        drawSatellite(canvas, paint, 87, 250, 0, 19, false);
-        drawSatellite(canvas, paint, 16, 64, 0, 7, false);
-
         drawNorthIndicator(canvas);
+
+        if (sats != null) {
+            drawSatellite(canvas, paint, 140,40,11,2,false);
+            String coords = "";
+            for (GpsSatellite sat: sats) {
+                drawSatellite(canvas, paint, sat.getElevation(), sat.getAzimuth(), sat.getSnr(), sat.getPrn(), sat.usedInFix());
+                coords+=sat.getPrn()+";"+sat.getAzimuth()+";"+sat.getElevation()+";"
+                        +sat.getSnr()+";"+sat.usedInFix()+"\n";
+            }
+            Log.d("SATELITES_SKY_VIEW", coords);
+        }
+
+
     }
 
     private void drawNorthIndicator(Canvas c) {
@@ -118,8 +134,9 @@ public class SkyView extends View {
         c.drawPath(path, mNorthFillPaint);
     }
 
+    @SuppressLint("ResourceAsColor")
     public void drawSatellite(Canvas canvas, Paint paint, float elev, float azim,
-                               float snrCn0, int prn, boolean usedInFix) {
+                              float snrCn0, int prn, boolean usedInFix) {
         double angle;
         int minScreenDimen;
         float radiusSat;
@@ -128,14 +145,14 @@ public class SkyView extends View {
         minScreenDimen = (getWidth() < getHeight()) ? getWidth() : getHeight();
         angle = (float) Math.toRadians(azim);
 
-        radiusSat = elevationToRadius(minScreenDimen, elev);
+        radiusSat = elevationToRadius(minScreenDimen, elev)-40;
         x = (float) ((minScreenDimen / 2) + (radiusSat * Math.sin(angle)));
         y = (float) ((minScreenDimen / 2) - (radiusSat * Math.cos(angle)));
 
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(satColor);
+        paint.setColor(R.color.colorPrimary);
         canvas.drawCircle(x, y, 20, paint);
-        paint.setColor(textColor);
+        paint.setColor(Color.WHITE);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(16);
         canvas.drawText(prn+"", x, y, paint);

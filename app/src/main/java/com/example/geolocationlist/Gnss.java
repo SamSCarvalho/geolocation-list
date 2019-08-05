@@ -3,7 +3,6 @@ package com.example.geolocationlist;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.GnssNavigationMessage;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
@@ -11,21 +10,20 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import org.w3c.dom.Text;
-
-import java.util.List;
+import org.xmlpull.v1.XmlPullParser;
 
 public class Gnss extends Fragment implements LocationListener, GpsStatus.Listener{
     private LocationManager locationManager;
@@ -117,10 +115,20 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
     @Override
     public void onGpsStatusChanged(int i) {
         String coords = "";
+
         try {
             GpsStatus gpsStatus = locationManager.getGpsStatus(null);
             if (gpsStatus != null) {
                 Iterable<GpsSatellite> sats = gpsStatus.getSatellites();
+                AttributeSet  attr = null;
+
+
+
+                SkyView skyView = new SkyView(getContext(), null );
+                skyView.setSats(sats);
+                FrameLayout info = (FrameLayout) getView().findViewById(R.id.skyFatherView);
+                info.removeAllViews();
+                info.addView(skyView);
                 for (GpsSatellite sat: sats) {
                     coords+=sat.getPrn()+";"+sat.getAzimuth()+";"+sat.getElevation()+";"
                             +sat.getSnr()+";"+sat.usedInFix()+"\n";
@@ -129,6 +137,7 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
         } catch (SecurityException e){
             e.printStackTrace();
         }
-        Log.d("SATELITES", coords);
+
     }
+
 }
