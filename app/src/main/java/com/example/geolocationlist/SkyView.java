@@ -104,7 +104,7 @@ public class SkyView extends View {
         path.lineTo(x3, y3);
         path.lineTo(x1, y1);
         path.close();
-        
+
         Matrix matrix = new Matrix();
         matrix.postRotate((float) -mOrientation, radius, radius);
         path.transform(matrix);
