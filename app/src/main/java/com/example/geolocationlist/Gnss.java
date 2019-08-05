@@ -2,6 +2,7 @@ package com.example.geolocationlist;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
@@ -99,11 +100,37 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
         TextView altitudeText = (TextView) getActivity().findViewById(R.id.altitudeValue);
         TextView longitudeText = (TextView) getActivity().findViewById(R.id.longitudeValue);
         TextView latitudeText = (TextView) getActivity().findViewById(R.id.latitudeValue);
+        String[] formatList = getResources().getStringArray(R.array.coordOpt);
 
-        altitudeText.setText(Location.convert(location.getAltitude(),Location.FORMAT_SECONDS));
-        longitudeText.setText(Location.convert(location.getLongitude(),Location.FORMAT_SECONDS));
-        latitudeText.setText(Location.convert(location.getLatitude(),Location.FORMAT_SECONDS));
+        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences("Config",0);
+
+        if(sharedPref.getString("formatoApresent", "error").equals(formatList[0])){
+            altitudeText.setText(Location.convert(location.getAltitude(),Location.FORMAT_DEGREES));
+            longitudeText.setText(Location.convert(location.getLongitude(),Location.FORMAT_DEGREES));
+            latitudeText.setText(Location.convert(location.getLatitude(),Location.FORMAT_DEGREES));
+
+        }
+        else if(sharedPref.getString("formatoApresent", "error").equals(formatList[1])){
+            altitudeText.setText(Location.convert(location.getAltitude(),Location.FORMAT_MINUTES));
+            longitudeText.setText(Location.convert(location.getLongitude(),Location.FORMAT_MINUTES));
+            latitudeText.setText(Location.convert(location.getLatitude(),Location.FORMAT_MINUTES));
+
+
+        }
+        else if(sharedPref.getString("formatoApresent", "error").equals(formatList[2])){
+            altitudeText.setText(Location.convert(location.getAltitude(),Location.FORMAT_SECONDS));
+            longitudeText.setText(Location.convert(location.getLongitude(),Location.FORMAT_SECONDS));
+            latitudeText.setText(Location.convert(location.getLatitude(),Location.FORMAT_SECONDS));
+
+        }
+
+        System.out.println("ALTITUDE   "+altitudeText);
+        System.out.println("LONGITUDE   "+longitudeText);
+        System.out.println("LATITUDE   "+latitudeText);
+
+
     }
+
     @Override
     public void onProviderDisabled(String provider) { }
     @Override
@@ -120,11 +147,17 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
             GpsStatus gpsStatus = locationManager.getGpsStatus(null);
             if (gpsStatus != null) {
                 Iterable<GpsSatellite> sats = gpsStatus.getSatellites();
-                SkyView skyView = new SkyView(getContext());
-                skyView.setSats(sats);
-                FrameLayout info = (FrameLayout) getView().findViewById(R.id.skyFatherView);
-                info.removeAllViews();
-                info.addView(skyView);
+                try{
+                    SkyView skyView = new SkyView(getContext());
+                    skyView.setSats(sats);
+                    FrameLayout info = (FrameLayout) getView().findViewById(R.id.skyFatherView);
+                    info.removeAllViews();
+                    info.addView(skyView);
+                } catch (Exception ex){
+                    System.out.println("Catch Exception "+ex);
+                }
+
+
                 for (GpsSatellite sat: sats) {
                     coords+=sat.getPrn()+";"+sat.getAzimuth()+";"+sat.getElevation()+";"
                             +sat.getSnr()+";"+sat.usedInFix()+"\n";
