@@ -15,5 +15,11 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         />
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_astronaut"/>
 
 </LinearLayout>
