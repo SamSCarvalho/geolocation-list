@@ -5,4 +5,5 @@
     <color name="colorAccent">#fff</color>
     <color name="colorText">#fff</color>
     <color name="bgtabs">#212121</color>
+    <color name="invalid">#757575</color>
 </resources>
