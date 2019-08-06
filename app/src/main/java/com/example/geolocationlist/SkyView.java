@@ -17,21 +17,30 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import org.w3c.dom.Attr;
+
 public class SkyView extends View {
     private int circleColor, textColor, satColor;
     private static int SAT_RADIUS;
     private String text;
     private double mOrientation = 0.0;
-    Canvas canvas = new Canvas();
     Iterable<GpsSatellite> sats = null;
 
-    public SkyView(Context context) {
-        super(context);
 
-    }
+    public SkyView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        SAT_RADIUS = dpToPixels(context, 5);
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.custom_attributes,
+                0, 0);
+        try {
+            circleColor = a.getInteger(R.styleable.custom_attributes_skyView_circleColor, 0);
+            textColor = a.getInteger(R.styleable.custom_attributes_skyView_textColor, 0);
+            text = a.getString(R.styleable.custom_attributes_skyView_text);
+            satColor = a.getInteger(R.styleable.custom_attributes_skyView_satColor, 0);
 
-    public SkyView(Context context, @Nullable AttributeSet attr) {
-        super(context, attr);
+        } finally {
+            a.recycle();
+        }
     }
 
     @SuppressLint("WrongCall")
@@ -54,11 +63,11 @@ public class SkyView extends View {
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(4);
-        paint.setColor(Color.GRAY);
+        paint.setColor(circleColor);
         canvas.drawCircle(viewWidthHalf, viewHeightHalf, radius, paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(4);
-        paint.setColor(Color.GRAY);
+        paint.setColor(circleColor);
         canvas.drawCircle(viewWidthHalf, viewHeightHalf, radius-100, paint);
         canvas.drawCircle(viewWidthHalf, viewHeightHalf, radius-200, paint);
 
@@ -112,7 +121,7 @@ public class SkyView extends View {
         Paint mNorthFillPaint;
 
         mNorthFillPaint = new Paint();
-        mNorthFillPaint.setColor(Color.GRAY);
+        mNorthFillPaint.setColor(circleColor);
         mNorthFillPaint.setStyle(Paint.Style.FILL);
         mNorthFillPaint.setStrokeWidth(4.0f);
         mNorthFillPaint.setAntiAlias(true);
@@ -137,13 +146,13 @@ public class SkyView extends View {
 
         paint.setStyle(Paint.Style.FILL);
         if (usedInFix) {
-            paint.setColor(Color.GRAY);
+            paint.setColor(satColor);
         } else {
-            paint.setColor(R.color.colorPrimary);
+            paint.setColor(circleColor);
         }
 
         canvas.drawCircle(x, y, 20, paint);
-        paint.setColor(Color.WHITE);
+        paint.setColor(textColor);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(16);
         canvas.drawText(prn+"", x, y, paint);

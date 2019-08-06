@@ -2,6 +2,7 @@ package com.example.geolocationlist;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.GpsSatellite;
@@ -123,12 +124,6 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
             latitudeText.setText(Location.convert(location.getLatitude(),Location.FORMAT_SECONDS));
 
         }
-
-        System.out.println("ALTITUDE   "+altitudeText);
-        System.out.println("LONGITUDE   "+longitudeText);
-        System.out.println("LATITUDE   "+latitudeText);
-
-
     }
 
     @Override
@@ -148,11 +143,9 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
             if (gpsStatus != null) {
                 Iterable<GpsSatellite> sats = gpsStatus.getSatellites();
                 try{
-                    SkyView skyView = new SkyView(getContext());
-                    skyView.setSats(sats);
-                    FrameLayout info = (FrameLayout) getView().findViewById(R.id.skyFatherView);
-                    info.removeAllViews();
-                    info.addView(skyView);
+                    SkyView info = (SkyView) getView().findViewById(R.id.skyView);
+                    info.setSats(sats);
+                    info.postInvalidate();
                 } catch (Exception ex){
                     System.out.println("Catch Exception "+ex);
                 }
