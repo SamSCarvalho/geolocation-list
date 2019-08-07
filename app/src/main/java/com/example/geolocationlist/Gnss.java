@@ -136,8 +136,6 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
 
     @Override
     public void onGpsStatusChanged(int i) {
-        String coords = "";
-
         try {
             GpsStatus gpsStatus = locationManager.getGpsStatus(null);
             if (gpsStatus != null) {
@@ -149,17 +147,10 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
                 } catch (Exception ex){
                     System.out.println("Catch Exception "+ex);
                 }
-
-
-                for (GpsSatellite sat: sats) {
-                    coords+=sat.getPrn()+";"+sat.getAzimuth()+";"+sat.getElevation()+";"
-                            +sat.getSnr()+";"+sat.usedInFix()+"\n";
-                }
             }
         } catch (SecurityException e){
             e.printStackTrace();
         }
-
     }
 
 }

@@ -16,6 +16,19 @@
         Móveis do curso de Sistemas de Informação do DCET – I da Universidade do Estado da Bahia – UNEB.
     </string>
 
+
+    <string name="latitude">Latitude</string>
+    <string name="valueLat">Valor da Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="valueLong">Valor da Longitude</string>
+    <string name="altitude">Altitude</string>
+    <string name="valueAlt">Valor da Altitude</string>
+
+    <string name="legenda">Legenda</string>
+        <string name="usedInFix">Disponibilidade do Sinal (usedInFix):</string>
+            <string name="disponivel">Disponível</string>
+            <string name="indisponivel">Indisponível</string>
+
     <string-array name="coordOpt" >
         <item>Grau Decimal</item>
         <item>Grau-Minuto Decimal</item>

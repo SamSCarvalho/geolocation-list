@@ -74,7 +74,6 @@ public class SkyView extends View {
         drawNorthIndicator(canvas);
 
         if (sats != null) {
-            drawSatellite(canvas, paint, 140,40,11,2,false);
             String coords = "";
             for (GpsSatellite sat: sats) {
                 drawSatellite(canvas, paint, sat.getElevation(), sat.getAzimuth(), sat.getSnr(), sat.getPrn(), sat.usedInFix());

@@ -38,7 +38,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:padding="5dp"
-                            android:text="Latitude"
+                            android:text="@string/latitude"
                             android:textSize="22dp" />
 
                         <TextView
@@ -47,7 +47,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="end"
                             android:padding="5dp"
-                            android:text="Valor da Latitude"
+                            android:text="@string/valueLat"
                             android:textColor="@color/colorPrimary"
                             android:textStyle="bold" />/>
 
@@ -68,7 +68,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
-                            android:text="Longitude"
+                            android:text="@string/longitude"
                             android:textSize="22dp" />
 
                         <TextView
@@ -77,7 +77,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="end"
                             android:padding="5dp"
-                            android:text="Valor da longitude"
+                            android:text="@string/valueLong"
                             android:textColor="@color/colorPrimary"
                             android:textStyle="bold" />/>
 
@@ -107,7 +107,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
-                            android:text="Altitude"
+                            android:text="@string/altitude"
                             android:textSize="22dp" />
 
                         <TextView
@@ -116,7 +116,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="end"
                             android:padding="5dp"
-                            android:text="Valor da Altitude"
+                            android:text="@string/valueAlt"
                             android:textColor="@color/colorPrimary"
                             android:textStyle="bold" />
 
