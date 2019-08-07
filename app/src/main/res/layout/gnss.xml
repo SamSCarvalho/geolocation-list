@@ -140,6 +140,9 @@
                     app:layout_constraintTop_toTopOf="parent"
                     custom:skyView_circleColor="@color/invalid"
                     custom:skyView_satColor="@color/colorPrimary"
+                    custom:skyView_lowSNR="@color/lowSNR"
+                    custom:skyView_highSNR="@color/highSNR"
+                    custom:skyView_mediumSNR="@color/mediumSNR"
                     custom:skyView_textColor="#fff" />
             </FrameLayout>
             <include layout="@layout/legend"/>

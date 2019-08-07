@@ -5,5 +5,8 @@
         <attr name="skyView_circleColor" format="color"/>
         <attr name="skyView_textColor" format="color"/>
         <attr name="skyView_satColor" format="color"/>
+        <attr name="skyView_lowSNR" format="color"/>
+        <attr name="skyView_mediumSNR" format="color"/>
+        <attr name="skyView_highSNR" format="color"/>
     </declare-styleable>
 </resources>

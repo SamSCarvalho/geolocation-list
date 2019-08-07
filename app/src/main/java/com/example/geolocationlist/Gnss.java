@@ -145,7 +145,7 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
                     info.setSats(sats);
                     info.postInvalidate();
                 } catch (Exception ex){
-                    System.out.println("Catch Exception "+ex);
+                    ex.printStackTrace();
                 }
             }
         } catch (SecurityException e){

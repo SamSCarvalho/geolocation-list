@@ -6,4 +6,7 @@
     <color name="colorText">#fff</color>
     <color name="bgtabs">#212121</color>
     <color name="invalid">#757575</color>
+    <color name="lowSNR">#f06292</color>
+    <color name="mediumSNR">#ff8f00</color>
+    <color name="highSNR">#4db6ac</color>
 </resources>

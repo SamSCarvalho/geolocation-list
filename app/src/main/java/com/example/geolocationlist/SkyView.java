@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import org.w3c.dom.Attr;
 
 public class SkyView extends View {
-    private int circleColor, textColor, satColor;
+    private int circleColor, textColor, satColor, lowSNR, highSNR, mediumSNR;
     private static int SAT_RADIUS;
     private String text;
     private double mOrientation = 0.0;
@@ -37,13 +37,14 @@ public class SkyView extends View {
             textColor = a.getInteger(R.styleable.custom_attributes_skyView_textColor, 0);
             text = a.getString(R.styleable.custom_attributes_skyView_text);
             satColor = a.getInteger(R.styleable.custom_attributes_skyView_satColor, 0);
-
+            lowSNR = a.getInteger(R.styleable.custom_attributes_skyView_lowSNR,0);
+            highSNR = a.getInteger(R.styleable.custom_attributes_skyView_highSNR, 0);
+            mediumSNR = a.getInteger(R.styleable.custom_attributes_skyView_mediumSNR, 0);
         } finally {
             a.recycle();
         }
     }
 
-    @SuppressLint("WrongCall")
     public void setSats(Iterable<GpsSatellite> sats) {
         this.sats = sats;
     }
@@ -65,25 +66,16 @@ public class SkyView extends View {
         paint.setStrokeWidth(4);
         paint.setColor(circleColor);
         canvas.drawCircle(viewWidthHalf, viewHeightHalf, radius, paint);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(4);
-        paint.setColor(circleColor);
         canvas.drawCircle(viewWidthHalf, viewHeightHalf, radius-100, paint);
         canvas.drawCircle(viewWidthHalf, viewHeightHalf, radius-200, paint);
 
         drawNorthIndicator(canvas);
 
         if (sats != null) {
-            String coords = "";
             for (GpsSatellite sat: sats) {
-                drawSatellite(canvas, paint, sat.getElevation(), sat.getAzimuth(), sat.getSnr(), sat.getPrn(), sat.usedInFix());
-                coords+=sat.getPrn()+";"+sat.getAzimuth()+";"+sat.getElevation()+";"
-                        +sat.getSnr()+";"+sat.usedInFix()+"\n";
+                drawSatellite(canvas, sat.getElevation(), sat.getAzimuth(), sat.getSnr(), sat.getPrn(), sat.usedInFix());
             }
-            Log.d("SATELITES_SKY_VIEW", coords);
         }
-
-
     }
 
     private void drawNorthIndicator(Canvas c) {
@@ -129,13 +121,14 @@ public class SkyView extends View {
     }
 
     @SuppressLint("ResourceAsColor")
-    public void drawSatellite(Canvas canvas, Paint paint, float elev, float azim,
+    public void drawSatellite(Canvas canvas, float elev, float azim,
                               float snrCn0, int prn, boolean usedInFix) {
         double angle;
         int minScreenDimen;
         float radiusSat;
         float x, y;
-
+        Paint paintStroke = new Paint();
+        Paint paintFill = new Paint();
         minScreenDimen = (getWidth() < getHeight()) ? getWidth() : getHeight();
         angle = (float) Math.toRadians(azim);
 
@@ -143,18 +136,46 @@ public class SkyView extends View {
         x = (float) ((minScreenDimen / 2) + (radiusSat * Math.sin(angle)));
         y = (float) ((minScreenDimen / 2) - (radiusSat * Math.cos(angle)));
 
-        paint.setStyle(Paint.Style.FILL);
-        if (usedInFix) {
-            paint.setColor(satColor);
+        paintStroke.setStyle(Paint.Style.STROKE);
+        paintStroke.setStrokeWidth(4);
+        if (snrCn0 <= 10) {
+            paintStroke.setColor(lowSNR);
+        } else if (snrCn0 >= 20) {
+            paintStroke.setColor(highSNR);
         } else {
-            paint.setColor(circleColor);
+            paintStroke.setColor(mediumSNR);
+        }
+        paintStroke.setAntiAlias(true);
+
+        paintFill.setStyle(Paint.Style.FILL);
+        if (usedInFix) {
+            paintFill.setColor(satColor);
+        } else {
+            paintFill.setColor(circleColor);
+        }
+        paintFill.setAntiAlias(true);
+
+        int satRadiusDraw = SAT_RADIUS + 10;
+
+        if (prn >= 1 && prn <= 32) { //GPS
+            canvas.drawCircle(x, y, 20, paintStroke);
+            canvas.drawCircle(x, y, 20, paintFill);
+        } if (prn >= 65 && prn <= 96) { //GLONASS
+            canvas.drawRect(x-satRadiusDraw,y-satRadiusDraw,x+satRadiusDraw,y+satRadiusDraw, paintStroke);
+            canvas.drawRect(x-satRadiusDraw,y-satRadiusDraw,x+satRadiusDraw,y+satRadiusDraw, paintFill);
+        } else if (prn >= 193 && prn <= 200) { //QZSS (Japão)
+            drawTriangle(canvas, x, y, paintFill, paintStroke, satRadiusDraw);
+        } else if (prn>= 201 && prn <= 235) { //BEIDOU
+            drawPentagon(canvas, x, y, paintFill, paintStroke, satRadiusDraw);
+        } else if(prn>=301 && prn <= 336) { //GALILEO
+            drawHexagon(canvas, x, y, paintFill, paintStroke, satRadiusDraw);
         }
 
-        canvas.drawCircle(x, y, 20, paint);
-        paint.setColor(textColor);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(16);
-        canvas.drawText(prn+"", x, y, paint);
+
+        paintFill.setColor(textColor);
+        paintFill.setTextAlign(Paint.Align.CENTER);
+        paintFill.setTextSize(16);
+        canvas.drawText(prn+"", x, y+5, paintFill);
     }
 
     public static float elevationToRadius(int s, float elev) {
@@ -166,6 +187,65 @@ public class SkyView extends View {
         final float scale = context.getResources().getDisplayMetrics().density;
         // Convert the dps to pixels, based on density scale
         return (int) (dp * scale + 0.5f);
+    }
+
+    private void drawTriangle(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint, int satRadiusDraw) {
+        float x1, y1;  // Top
+        x1 = x;
+        y1 = y - satRadiusDraw;
+
+        float x2, y2; // Lower left
+        x2 = x - satRadiusDraw;
+        y2 = y + satRadiusDraw;
+
+        float x3, y3; // Lower right
+        x3 = x + satRadiusDraw;
+        y3 = y + satRadiusDraw;
+
+        Path path = new Path();
+        path.setFillType(Path.FillType.EVEN_ODD);
+        path.moveTo(x1, y1);
+        path.lineTo(x2, y2);
+        path.lineTo(x3, y3);
+        path.lineTo(x1, y1);
+        path.close();
+
+        c.drawPath(path, fillPaint);
+        c.drawPath(path, strokePaint);
+    }
+
+    private void drawPentagon(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint, int satRadiusDraw) {
+        Path path = new Path();
+        path.moveTo(x, y - satRadiusDraw);
+        path.lineTo(x - satRadiusDraw, y - (satRadiusDraw / 3));
+        path.lineTo(x - 2 * (satRadiusDraw / 3), y + satRadiusDraw);
+        path.lineTo(x + 2 * (satRadiusDraw / 3), y + satRadiusDraw);
+        path.lineTo(x + satRadiusDraw, y - (satRadiusDraw / 3));
+        path.close();
+
+        c.drawPath(path, fillPaint);
+        c.drawPath(path, strokePaint);
+    }
+
+    private void drawHexagon(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint, int satRadiusDraw) {
+        final float MULTIPLIER = 0.6f;
+        final float SIDE_MULTIPLIER = 1.4f;
+        Path path = new Path();
+        // Top-left
+        path.moveTo(x - satRadiusDraw * MULTIPLIER, y - satRadiusDraw);
+        // Left
+        path.lineTo(x - satRadiusDraw * SIDE_MULTIPLIER, y);
+        // Bottom
+        path.lineTo(x - satRadiusDraw * MULTIPLIER, y + satRadiusDraw);
+        path.lineTo(x + satRadiusDraw * MULTIPLIER, y + satRadiusDraw);
+        // Right
+        path.lineTo(x + satRadiusDraw * SIDE_MULTIPLIER, y);
+        // Top-right
+        path.lineTo(x + satRadiusDraw * MULTIPLIER, y - satRadiusDraw);
+        path.close();
+
+        c.drawPath(path, fillPaint);
+        c.drawPath(path, strokePaint);
     }
 
 }

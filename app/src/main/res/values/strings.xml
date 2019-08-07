@@ -28,6 +28,16 @@
         <string name="usedInFix">Disponibilidade do Sinal (usedInFix):</string>
             <string name="disponivel">Disponível</string>
             <string name="indisponivel">Indisponível</string>
+        <string name="snr">SNR - signal to noise ratio</string>
+            <string name="snrHight">Sinal Forte ( maior que 20 SNR )</string>
+            <string name="snrMedium">Sinal Médio ( entre 10 e 20 SNR)</string>
+            <string name="snrLow">Sinal Fraco ( menor que 10 SNR )</string>
+        <string name="costelacao">Costelação</string>
+            <string name="gps">GPS</string>
+            <string name="glonass">GLONASS</string>
+            <string name="qzss">QZSS (Japão)</string>
+            <string name="beidou">BEIDOU</string>
+            <string name="galileo">GALILEO</string>
 
     <string-array name="coordOpt" >
         <item>Grau Decimal</item>
