@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgtabs">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="24dp"
+        android:paddingTop="15dp">
+        <Switch
+            android:id="@+id/mostrarMapa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mostrarMapa"
+            android:textColor="@color/colorText"
+            android:layout_marginLeft="20dp"
+            android:textOff="OFF"
+            android:textOn="ON"
+            android:theme="@style/SwitchTheme"/>
+        <Button
+            android:id="@+id/apagarHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="122dp"
+            android:background="@color/colorPrimary"
+            android:text="Apagar Registros"
+            android:textColor="@color/colorText"
+            android:padding="10dp"
+            />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.google.android.gms.maps.MapView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mapHist"
+            android:padding="20dp"
+            android:visibility="invisible">
+        </com.google.android.gms.maps.MapView>
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listaView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+
+</LinearLayout>

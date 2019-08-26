@@ -18,9 +18,15 @@ public class PageAdapter extends FragmentStatePagerAdapter {
                 Gnss gnss = new Gnss();
                 return gnss;
             case 1:
+                Mapa mapa = new Mapa();
+                return mapa;
+            case 2:
+                Historico historico = new Historico();
+                return historico;
+            case 3:
                 Configuracoes configuracoes = new Configuracoes();
                 return configuracoes;
-            case 2:
+            case 4:
                 Creditos creditos = new Creditos();
                 return creditos;
             default:

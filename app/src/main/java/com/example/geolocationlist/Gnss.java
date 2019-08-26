@@ -19,11 +19,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -105,6 +109,11 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
 
         SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences("Config",0);
 
+        BancoController crud = new BancoController(getContext());
+
+        crud.insereDado(location.getLongitude(),location.getLatitude(),location.getAltitude());
+
+
         if(sharedPref.getString("formatoApresent", "error").equals(formatList[0])){
             altitudeText.setText(Location.convert(location.getAltitude(),Location.FORMAT_DEGREES));
             longitudeText.setText(Location.convert(location.getLongitude(),Location.FORMAT_DEGREES));
@@ -115,7 +124,6 @@ public class Gnss extends Fragment implements LocationListener, GpsStatus.Listen
             altitudeText.setText(Location.convert(location.getAltitude(),Location.FORMAT_MINUTES));
             longitudeText.setText(Location.convert(location.getLongitude(),Location.FORMAT_MINUTES));
             latitudeText.setText(Location.convert(location.getLatitude(),Location.FORMAT_MINUTES));
-
 
         }
         else if(sharedPref.getString("formatoApresent", "error").equals(formatList[2])){

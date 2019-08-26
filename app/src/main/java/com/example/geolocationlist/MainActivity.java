@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity{
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("GNSS"));
+        tabLayout.addTab(tabLayout.newTab().setText("Mapa"));
+        tabLayout.addTab(tabLayout.newTab().setText("Histórico"));
         tabLayout.addTab(tabLayout.newTab().setText("Configurações"));
         tabLayout.addTab(tabLayout.newTab().setText("Créditos"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);

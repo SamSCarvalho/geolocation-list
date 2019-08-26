@@ -7,6 +7,7 @@
     <string name="orientMapa">Orientação do Mapa</string>
     <string name="tipoMapa">Tipo do Mapa</string>
     <string name="infotrafego">Informações de Tráfego</string>
+    <string name="mostrarMapa">Visão de Mapa </string>
     <string name="creditos"> \n Esta aplicação consiste na implementação de um sistema de navegação para
         dispositivos móveis, fornecendo uma interface com o usuário com informações relacionadas as
         coordenadas do dispositivo, posição de satélites visíveis na esfera celeste e qualidade do
@@ -46,7 +47,7 @@
     </string-array>
 
     <string-array name="velocidadeOpt" >
-        <item>Km/h(quilometro por hora) </item>
+        <item>Km/h(quilometro por hora)</item>
         <item>Mph (milhas por hora)</item>
     </string-array>
 
