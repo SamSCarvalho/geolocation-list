@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -37,6 +40,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class Mapa extends Fragment implements OnMapReadyCallback, LocationListener {
     private LocationManager locationManager;
@@ -169,8 +174,6 @@ public class Mapa extends Fragment implements OnMapReadyCallback, LocationListen
             );
         }
 
-
-
         mGoogleMap.setMapType(MapType);
         mGoogleMap.setTrafficEnabled(Traffic);
 
@@ -181,6 +184,7 @@ public class Mapa extends Fragment implements OnMapReadyCallback, LocationListen
                 ).title("Estamos aqui")
                         .snippet("Data e Hora: "+lastPosition.getDataHora())
         );
+      
 
         CameraPosition Liberty = CameraPosition.builder().target(
                 new LatLng(lastPosition.getLatitude(), lastPosition.getLongitude())
@@ -263,6 +267,8 @@ public class Mapa extends Fragment implements OnMapReadyCallback, LocationListen
 
     @Override
     public void onProviderDisabled(String s) {
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.ic_question);
+        nowLocation.setIcon(bmp);
 
     }
 }
