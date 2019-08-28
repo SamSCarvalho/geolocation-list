@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -182,8 +186,8 @@ public class Mapa extends Fragment implements OnMapReadyCallback, LocationListen
                 new MarkerOptions().position(
                         new LatLng(lastPosition.getLatitude(), lastPosition.getLongitude())
                 ).title("Estamos aqui")
-                        .snippet("Data e Hora: "+lastPosition.getDataHora())
         );
+        nowLocation.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
       
 
         CameraPosition Liberty = CameraPosition.builder().target(
@@ -223,6 +227,8 @@ public class Mapa extends Fragment implements OnMapReadyCallback, LocationListen
         }
 
         nowLocation.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+        nowLocation.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+        nowLocation.setTitle("Estamos aqui");
 
         CameraPosition Liberty = CameraPosition.builder().target(
                 new LatLng(location.getLatitude(), location.getLongitude())
@@ -262,13 +268,23 @@ public class Mapa extends Fragment implements OnMapReadyCallback, LocationListen
 
     @Override
     public void onProviderEnabled(String s) {
+        nowLocation.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+        nowLocation.setTitle("Estamos aqui");
+    }
 
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     @Override
     public void onProviderDisabled(String s) {
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.ic_question);
-        nowLocation.setIcon(bmp);
-
+        nowLocation.setIcon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_question));
+        nowLocation.setTitle("GPS desativado");
     }
 }

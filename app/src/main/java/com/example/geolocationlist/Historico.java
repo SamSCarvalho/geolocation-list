@@ -133,7 +133,7 @@ public class Historico extends Fragment implements OnMapReadyCallback {
 
         PolylineOptions options = new PolylineOptions();
 
-        options.color( Color.parseColor( "#CC0000FF" ) );
+        options.color( Color.parseColor( "#8e24aa" ) );
         options.width( 5 );
         options.visible( true );
 
